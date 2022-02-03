@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
                 else
                 {
                     execute(commands[i], num_commands, pipes[i - 1].rw_pipe, pipes[i].rw_pipe, pipes);
-                    wait(NULL);
+                    // wait(NULL);
 
                     if (redirect_present != NULL)
                     {
@@ -78,11 +78,10 @@ int main(int argc, char *argv[])
                         filename = strtok(NULL, " ");
                         
                         // CREATE FILE WITH FILENAME
-                        FILE * file;
-                        file = fopen(filename, "w");
-                        fputs(, file);
-                        fclose(file);
-
+                        int file = open(filename, O_RDWR | O_CREAT, S_IRUSR | S_IWUSR);
+                        dup2(file, STDOUT_FILENO);
+                        dup2(file, STDERR_FILENO);
+                        close(file);
                     }
 
                 }
